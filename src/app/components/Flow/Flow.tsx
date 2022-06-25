@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useState, useCallback } from 'react';
 import ReactFlow, {
   addEdge,
@@ -13,6 +13,7 @@ import ReactFlow, {
   MiniMap,
   Controls,
 } from 'react-flow-renderer';
+import { TextUpdaterNode } from '../nodes/Conversation';
 
 const initialNodes: Node[] = [
   {
@@ -33,6 +34,7 @@ const initialNodes: Node[] = [
     className: 'light',
     parentNode: '2',
     extent: 'parent',
+    type: 'conversation',
   },
 ];
 
@@ -43,6 +45,8 @@ const fitViewOptions: FitViewOptions = {
 };
 
 export function Flow() {
+  const nodeTypes = useMemo(() => ({ conversation: TextUpdaterNode }), []);
+
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
 
@@ -61,6 +65,7 @@ export function Flow() {
 
   return (
     <ReactFlow
+      nodeTypes={nodeTypes}
       nodes={nodes}
       edges={edges}
       onNodesChange={onNodesChange}
